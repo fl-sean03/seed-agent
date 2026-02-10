@@ -34,10 +34,9 @@ from connectors.base.message import (
 
 try:
     import discord
+    _HAS_DISCORD = True
 except ImportError:
-    raise ImportError(
-        "Discord connector requires discord.py. Install: pip install seed-agent[discord]"
-    )
+    _HAS_DISCORD = False
 
 
 class DiscordConnector(Connector):
@@ -46,6 +45,11 @@ class DiscordConnector(Connector):
     connector_type = "discord"
 
     def connect(self) -> None:
+        if not _HAS_DISCORD:
+            raise ImportError(
+                "Discord connector requires discord.py. Install: pip install seed-agent[discord]"
+            )
+
         self._token = self.get_config("token", env_key="DISCORD_TOKEN")
         if not self._token:
             raise ValueError(

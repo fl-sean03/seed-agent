@@ -36,10 +36,9 @@ from connectors.base.message import (
 try:
     from slack_bolt import App
     from slack_bolt.adapter.socket_mode import SocketModeHandler
+    _HAS_SLACK = True
 except ImportError:
-    raise ImportError(
-        "Slack connector requires slack-bolt. Install: pip install seed-agent[slack]"
-    )
+    _HAS_SLACK = False
 
 
 class SlackConnector(Connector):
@@ -48,6 +47,11 @@ class SlackConnector(Connector):
     connector_type = "slack"
 
     def connect(self) -> None:
+        if not _HAS_SLACK:
+            raise ImportError(
+                "Slack connector requires slack-bolt. Install: pip install seed-agent[slack]"
+            )
+
         bot_token = self.get_config("bot_token", env_key="SLACK_BOT_TOKEN")
         self._app_token = self.get_config("app_token", env_key="SLACK_APP_TOKEN")
 

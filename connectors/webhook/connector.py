@@ -46,10 +46,9 @@ from connectors.base.message import (
 
 try:
     from flask import Flask, request, jsonify
+    _HAS_FLASK = True
 except ImportError:
-    raise ImportError(
-        "Webhook connector requires Flask. Install: pip install seed-agent[webhook]"
-    )
+    _HAS_FLASK = False
 
 
 class WebhookConnector(Connector):
@@ -58,6 +57,11 @@ class WebhookConnector(Connector):
     connector_type = "webhook"
 
     def connect(self) -> None:
+        if not _HAS_FLASK:
+            raise ImportError(
+                "Webhook connector requires Flask. Install: pip install seed-agent[webhook]"
+            )
+
         self._host = self.get_config("host", "0.0.0.0")
         self._port = int(self.get_config("port", 8080))
         self._secret = self.get_config("secret", env_key="WEBHOOK_SECRET")

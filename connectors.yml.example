@@ -1,0 +1,60 @@
+# connectors.yml — Connector configuration for your seed agent
+#
+# Each connector runs as a separate process. Only list connectors
+# whose dependencies are installed:
+#   pip install seed-agent[slack]      # for Slack
+#   pip install seed-agent[discord]    # for Discord
+#   pip install seed-agent[telegram]   # for Telegram
+#   pip install seed-agent[webhook]    # for Webhook
+#   pip install seed-agent[all]        # all optional connectors
+#
+# CLI and Email connectors have no extra dependencies.
+#
+# Environment variables (${VAR_NAME}) are expanded at runtime.
+
+connectors:
+  # CLI — Terminal interaction (no dependencies)
+  - name: cli
+    type: cli
+    username: user
+
+  # Slack — Socket Mode (no public URL needed)
+  # - name: slack-main
+  #   type: slack
+  #   bot_token: ${SLACK_BOT_TOKEN}
+  #   app_token: ${SLACK_APP_TOKEN}
+  #   channels: []  # Channel IDs to monitor (empty = all)
+
+  # Discord — Bot with message content intent
+  # - name: discord-main
+  #   type: discord
+  #   token: ${DISCORD_TOKEN}
+  #   guilds: []    # Guild IDs (empty = all)
+  #   channels: []  # Channel IDs (empty = all)
+
+  # Telegram — Bot API with long polling
+  # - name: telegram-main
+  #   type: telegram
+  #   token: ${TELEGRAM_BOT_TOKEN}
+  #   allowed_chats: []  # Chat IDs (empty = all)
+
+  # Email — IMAP/SMTP (no extra dependencies)
+  # - name: email-main
+  #   type: email
+  #   imap_host: imap.gmail.com
+  #   imap_port: 993
+  #   smtp_host: smtp.gmail.com
+  #   smtp_port: 587
+  #   username: ${EMAIL_USERNAME}
+  #   password: ${EMAIL_PASSWORD}
+  #   poll_interval: 60
+  #   folders: ["INBOX"]
+  #   allowed_senders: []
+
+  # Webhook — Generic HTTP endpoint
+  # - name: webhook-main
+  #   type: webhook
+  #   host: 0.0.0.0
+  #   port: 8080
+  #   secret: ${WEBHOOK_SECRET}
+  #   path: /webhook

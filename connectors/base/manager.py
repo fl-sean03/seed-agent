@@ -72,6 +72,10 @@ def _run_connector(
         cls = _load_connector_class(connector_type)
         connector = cls(name=name, seed_home=seed_home, config=config)
         connector.run()
+    except ImportError as e:
+        # Missing dependency — exit with code 2 to signal "don't restart"
+        logger.error(f"Connector {name} missing dependency: {e}")
+        sys.exit(2)
     except Exception as e:
         logger.error(f"Connector {name} crashed: {e}", exc_info=True)
         sys.exit(1)
@@ -164,6 +168,14 @@ class ConnectorManager:
                 if proc and not proc.is_alive():
                     exit_code = proc.exitcode
                     logger.warning(f"Connector {name} exited (code={exit_code})")
+
+                    # Exit code 2 = missing dependency, don't restart
+                    if exit_code == 2:
+                        logger.error(
+                            f"Connector {name} is missing dependencies. "
+                            f"Install them and restart the manager."
+                        )
+                        continue
 
                     if restart_on_crash and self._running:
                         logger.info(f"Restarting {name} in {restart_delay}s...")

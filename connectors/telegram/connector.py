@@ -34,11 +34,9 @@ from connectors.base.message import (
 try:
     from telegram import Update
     from telegram.ext import Application, MessageHandler, filters, ContextTypes
+    _HAS_TELEGRAM = True
 except ImportError:
-    raise ImportError(
-        "Telegram connector requires python-telegram-bot. "
-        "Install: pip install seed-agent[telegram]"
-    )
+    _HAS_TELEGRAM = False
 
 
 class TelegramConnector(Connector):
@@ -47,6 +45,12 @@ class TelegramConnector(Connector):
     connector_type = "telegram"
 
     def connect(self) -> None:
+        if not _HAS_TELEGRAM:
+            raise ImportError(
+                "Telegram connector requires python-telegram-bot. "
+                "Install: pip install seed-agent[telegram]"
+            )
+
         self._token = self.get_config("token", env_key="TELEGRAM_BOT_TOKEN")
         if not self._token:
             raise ValueError(

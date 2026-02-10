@@ -114,11 +114,11 @@ cmd_status() {
     echo ""
 
     # Cycle count
-    CYCLE_COUNT=$(ls -1 "$SEED_HOME/logs"/cycle-*.log 2>/dev/null | wc -l)
+    CYCLE_COUNT=$(find "$SEED_HOME/logs" -name 'cycle-*.log' 2>/dev/null | wc -l)
     echo "Cycles: $CYCLE_COUNT logged"
 
     # Last cycle
-    LAST_CYCLE=$(ls -1t "$SEED_HOME/logs"/cycle-*.log 2>/dev/null | head -1)
+    LAST_CYCLE=$(find "$SEED_HOME/logs" -name 'cycle-*.log' -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2-)
     if [ -n "$LAST_CYCLE" ]; then
         echo "Last:   $(basename "$LAST_CYCLE" .log)"
     fi
