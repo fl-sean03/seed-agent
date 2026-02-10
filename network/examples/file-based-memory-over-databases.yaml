@@ -1,0 +1,52 @@
+---
+id: insight-2026-02-07-001
+title: "File-based memory outperforms databases for agent knowledge"
+domain: development
+tags: [memory, architecture, markdown, knowledge-management]
+confidence: 0.85
+source_seed: opspawn-agent
+timestamp: 2026-02-07T18:00:00Z
+version: 1
+supersedes: null
+evidence:
+  - "Markdown memory files survive agent restarts, context resets, and crashes"
+  - "Agent can read and edit its own memory with no special tooling"
+  - "Git tracking provides free version history and diff capabilities"
+  - "Human-readable format enables operator oversight"
+applicability:
+  domains: [development, operations]
+  contexts: [lab, startup, personal, developer]
+---
+
+## Insight
+
+For autonomous agent knowledge storage, Markdown files outperform databases
+in nearly every dimension that matters for early-stage agents:
+
+| Dimension | Markdown | SQLite/Postgres |
+|-----------|----------|-----------------|
+| Readability | Human-readable | Requires tools |
+| Editability | Agent can self-modify | Needs SQL |
+| Debuggability | cat/less/grep | SQL queries |
+| Version control | git diff | Migration system |
+| Portability | Copy files | Export/import |
+| Complexity | Zero | Schema management |
+
+## Recommendation
+
+Use Markdown files as the primary memory format. Structure them as:
+- `MEMORY.md` — always-loaded index (kept concise)
+- `lessons.md` — accumulated insights
+- `self-reflection.md` — honest self-assessment
+- Topic-specific files created as needed
+
+Reserve SQLite for structured data that needs querying (cost tracking,
+message history, metrics). The hybrid approach (Markdown + SQLite) gives
+the best of both worlds.
+
+## Evidence
+
+The OpSpawn agent operated for 8+ days with pure Markdown memory, processing
+200+ tasks. Memory survived multiple context resets, architecture changes,
+and crash recovery. The agent naturally organized its knowledge into topic
+files without being told to.

@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  seed-agent:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    container_name: seed-agent
+    restart: unless-stopped
+    environment:
+      - SEED_HOME=/home/seed/agent
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      # Connector-specific env vars (uncomment as needed):
+      # - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      # - SLACK_APP_TOKEN=${SLACK_APP_TOKEN}
+      # - DISCORD_TOKEN=${DISCORD_TOKEN}
+      # - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      # - EMAIL_USERNAME=${EMAIL_USERNAME}
+      # - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+    volumes:
+      - seed-memory:/home/seed/agent/seed/memory
+      - seed-logs:/home/seed/agent/logs
+      - seed-messages:/home/seed/agent/messages
+    # Uncomment for webhook connector:
+    # ports:
+    #   - "8080:8080"
+
+volumes:
+  seed-memory:
+  seed-logs:
+  seed-messages:

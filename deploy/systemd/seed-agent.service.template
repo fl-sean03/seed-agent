@@ -1,0 +1,27 @@
+[Unit]
+Description=Seed Agent — Autonomous AI Agent Loop
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=${USER}
+WorkingDirectory=${SEED_HOME}
+Environment=SEED_HOME=${SEED_HOME}
+ExecStart=/bin/bash ${SEED_HOME}/seed/loop.sh
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=seed-agent
+
+# Resource limits
+MemoryMax=4G
+CPUQuota=200%
+
+# Security
+NoNewPrivileges=false
+ProtectSystem=false
+
+[Install]
+WantedBy=multi-user.target

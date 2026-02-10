@@ -1,0 +1,16 @@
+# Startup context — Slack for team + Email for external
+connectors:
+  - name: slack-team
+    type: slack
+    bot_token: ${SLACK_BOT_TOKEN}
+    app_token: ${SLACK_APP_TOKEN}
+    channels: []  # Add your team channel IDs
+
+  - name: email-main
+    type: email
+    imap_host: imap.gmail.com
+    smtp_host: smtp.gmail.com
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    poll_interval: 60
+    folders: ["INBOX"]

@@ -1,0 +1,10 @@
+# Personal context — CLI + messaging platforms
+connectors:
+  - name: cli
+    type: cli
+    username: me
+
+  - name: telegram-personal
+    type: telegram
+    token: ${TELEGRAM_BOT_TOKEN}
+    allowed_chats: []  # Add your chat IDs

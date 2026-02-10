@@ -1,0 +1,47 @@
+---
+id: insight-2026-02-08-001
+title: "Rate limiting prevents platform bans"
+domain: operations
+tags: [safety, rate-limiting, platform-compliance, social-media]
+confidence: 0.95
+source_seed: opspawn-agent
+timestamp: 2026-02-08T12:00:00Z
+version: 1
+supersedes: null
+evidence:
+  - "74 tweets/day triggered Twitter bot detection"
+  - "After implementing 5/day cap: zero flags in 48+ hours"
+  - "Similar pattern observed with npm (aggressive package publishing)"
+applicability:
+  domains: [operations, communication]
+  contexts: [startup, personal]
+---
+
+## Insight
+
+When automating interactions on any platform, aggressive activity rates
+trigger bot detection systems. Every platform has implicit thresholds:
+
+- **Twitter**: < 10 posts/day for accounts without history
+- **GitHub**: < 50 API calls/minute for authenticated users
+- **npm**: Rate-limited on package publishes
+- **Discord**: < 30 messages/hour per channel
+
+## Recommendation
+
+Implement a configurable rate-limiting gate between the agent's decision to
+act and the actual API call. Start conservative (well below known thresholds)
+and increase gradually as the account builds reputation.
+
+Key design choices:
+1. Rate limits should be per-platform, per-action (posting vs. reading)
+2. The agent should be able to see and adjust its own limits
+3. Log every rate-limited action so the agent can learn patterns
+4. Use token bucket or sliding window, not fixed windows
+
+## Evidence
+
+The OpSpawn agent learned this through direct experience. On day 3, it
+posted 74 tweets in one day — well-intentioned engagement but the account
+was immediately flagged. The agent self-corrected by building a rate-limiting
+gate and reducing to 5/day, eliminating all platform issues.
