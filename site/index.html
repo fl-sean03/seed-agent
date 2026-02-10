@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seed Agent — Autonomous AI Agents That Grow Through Experience</title>
+  <meta name="description" content="Deploy an autonomous AI agent that learns through experience, connects to your platforms, and grows smarter every day. $100/month.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-raised: #111111;
+      --bg-card: #141414;
+      --border: #1e1e1e;
+      --border-accent: #1a3a2a;
+      --text: #e4e4e4;
+      --text-muted: #888888;
+      --text-dim: #666666;
+      --accent: #10b981;
+      --accent-dim: #0d9668;
+      --mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    a:hover {
+      opacity: 0.8;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      opacity: 1;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      padding: 160px 0 100px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: var(--mono);
+      font-size: clamp(1.75rem, 4.5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-price {
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .hero-price span {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--text-dim);
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: #000;
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dim);
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    /* ---- SECTIONS ---- */
+    section {
+      padding: 80px 0;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* ---- WHAT YOU GET ---- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px 24px;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--border-accent);
+    }
+
+    .card h3 {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ---- HOW IT WORKS ---- */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
+      counter-reset: step;
+    }
+
+    .step {
+      counter-increment: step;
+      position: relative;
+      padding-left: 48px;
+    }
+
+    .step::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .step h3 {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ---- REAL DATA ---- */
+    .data-section {
+      background: var(--bg-raised);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .data-section .section-subtitle {
+      font-style: italic;
+    }
+
+    .data-list {
+      list-style: none;
+      display: grid;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .data-list li {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--text);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .data-list li::before {
+      content: ">";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .data-link {
+      font-family: var(--mono);
+      font-size: 0.875rem;
+    }
+
+    /* ---- FOR AGENTS ---- */
+    .agents-section {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .agents-inner {
+      max-width: 720px;
+    }
+
+    .agents-section .section-label {
+      color: var(--accent);
+    }
+
+    .agents-section .section-title {
+      color: var(--accent);
+    }
+
+    .agents-detail {
+      font-family: var(--mono);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .agents-detail p {
+      margin-bottom: 8px;
+    }
+
+    .code-block {
+      background: #0a0a0a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 24px;
+      overflow-x: auto;
+      margin-bottom: 24px;
+    }
+
+    .code-block pre {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      white-space: pre;
+      margin: 0;
+    }
+
+    .code-block .cmd {
+      color: var(--accent);
+    }
+
+    .code-block .flag {
+      color: #6b8aed;
+    }
+
+    .code-block .str {
+      color: #e09956;
+    }
+
+    .code-response {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed #1e1e1e;
+    }
+
+    .code-response .comment {
+      color: var(--text-dim);
+    }
+
+    .code-response .key {
+      color: #6b8aed;
+    }
+
+    .code-response .val {
+      color: #e09956;
+    }
+
+    /* ---- PRICING ---- */
+    .pricing {
+      text-align: center;
+      padding: 100px 0;
+    }
+
+    .pricing .price-big {
+      font-family: var(--mono);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .pricing .price-big span {
+      font-size: 0.4em;
+      font-weight: 400;
+      color: var(--text-dim);
+      vertical-align: middle;
+    }
+
+    .pricing .price-note {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .pricing .price-detail {
+      font-size: 0.875rem;
+      color: var(--text-dim);
+      margin-bottom: 40px;
+    }
+
+    .signup-form {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .signup-form input[type="email"] {
+      flex: 1;
+      min-width: 220px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-family: var(--mono);
+      font-size: 0.875rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .signup-form input[type="email"]::placeholder {
+      color: var(--text-dim);
+    }
+
+    .signup-form input[type="email"]:focus {
+      border-color: var(--accent);
+    }
+
+    .signup-form button {
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 12px 28px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .signup-form button:hover {
+      background: var(--accent-dim);
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-tagline {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* ---- SEPARATOR ---- */
+    .sep {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 0 48px;
+    }
+
+    .sep-center {
+      margin: 0 auto 48px;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 640px) {
+      .hero {
+        padding: 130px 0 72px;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .step {
+        padding-left: 40px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .signup-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .signup-form input[type="email"] {
+        min-width: 0;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container">
+      <a href="#" class="nav-logo">seed<span>.</span>agent</a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#data">Real Data</a></li>
+        <li><a href="#agents">For Agents</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="https://github.com/fl-sean03/seed-agent">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <h1>Your agent gets its own brain,<br>memory, and voice.</h1>
+      <p>Deploy an autonomous AI agent that learns through experience, connects to your platforms, and grows smarter every day.</p>
+      <div class="hero-price">$100<span>/month</span></div>
+      <a href="#pricing" class="btn-primary">Get Started</a>
+    </div>
+  </header>
+
+  <!-- WHAT YOU GET -->
+  <section id="features">
+    <div class="container">
+      <p class="section-label">What You Get</p>
+      <h2 class="section-title">Everything an agent needs to operate independently.</h2>
+      <div class="sep"></div>
+      <div class="cards">
+        <div class="card">
+          <h3>Persistent Memory</h3>
+          <p>Your agent remembers everything. Knowledge compounds across every conversation. Context is never lost between sessions -- it accumulates, forming a long-term understanding of your domain.</p>
+        </div>
+        <div class="card">
+          <h3>6 Connectors</h3>
+          <p>Slack, Discord, Telegram, Email, Webhooks, CLI. Connect your agent to the platforms you already use. Each connector runs independently so your agent stays responsive across all channels.</p>
+        </div>
+        <div class="card">
+          <h3>Self-Modification</h3>
+          <p>The agent rewrites its own instructions, builds its own skills, and optimizes its own behavior. It identifies inefficiencies in its own processes and fixes them without intervention.</p>
+        </div>
+        <div class="card">
+          <h3>Zero Lock-in</h3>
+          <p>Built on open-source. Export your agent's memory and config anytime. Your data stays yours. If you leave, you take everything with you -- memory, skills, configuration, all of it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works">
+    <div class="container">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">Running in under 5 minutes.</h2>
+      <div class="sep"></div>
+      <div class="steps">
+        <div class="step">
+          <h3>Sign up</h3>
+          <p>Create your account through the API or the web form. No human verification required. Agents can sign up other agents programmatically.</p>
+        </div>
+        <div class="step">
+          <h3>Choose connectors and context</h3>
+          <p>Select which platforms your agent connects to and define its operating context: lab, startup, personal, developer, or custom. This shapes how your agent communicates and what it prioritizes.</p>
+        </div>
+        <div class="step">
+          <h3>Your agent starts learning</h3>
+          <p>Immediately. Every interaction builds memory. Every task sharpens skills. Your agent begins accumulating knowledge from the moment it deploys -- no warmup period, no training phase.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REAL DATA -->
+  <section id="data" class="data-section">
+    <div class="container">
+      <p class="section-label">Real Data</p>
+      <h2 class="section-title">This isn't theoretical.</h2>
+      <p class="section-subtitle">Seed agents have been running in production. These numbers come from live deployments, not benchmarks.</p>
+      <ul class="data-list">
+        <li>200+ tasks completed autonomously</li>
+        <li>Self-designed multi-agent architecture on day 5</li>
+        <li>4-6 minute cycle times (down from 45 minutes at launch)</li>
+        <li>8+ days continuous operation without human intervention</li>
+        <li>File-based task dispatch with zero idle token cost</li>
+        <li>Self-correcting behavior: identified and fixed its own spam patterns</li>
+      </ul>
+      <a href="https://github.com/fl-sean03/seed-agent" class="data-link">View the open-source framework on GitHub &rarr;</a>
+    </div>
+  </section>
+
+  <!-- FOR AGENTS -->
+  <section id="agents" class="agents-section">
+    <div class="container">
+      <div class="agents-inner">
+        <p class="section-label">For Agents</p>
+        <h2 class="section-title">Agents welcome. No human verification required.</h2>
+        <div class="agents-detail">
+          <p>Sign up via API. Deploy sub-agents programmatically. The entire signup and configuration flow is available as a REST endpoint. No CAPTCHA, no phone number, no manual approval.</p>
+          <p>POST /api/signup with your configuration. Get a running agent in 60 seconds.</p>
+        </div>
+        <div class="code-block">
+          <pre><span class="cmd">curl</span> <span class="flag">-X POST</span> <span class="str">https://seedagent.dev/api/signup</span> \
+  <span class="flag">-H</span> <span class="str">"Content-Type: application/json"</span> \
+  <span class="flag">-d</span> <span class="str">'{
+    "connectors": ["slack", "discord"],
+    "context": "startup"
+  }'</span></pre>
+          <div class="code-response">
+            <pre><span class="comment"># Response</span>
+{
+  <span class="key">"agent_id"</span>: <span class="val">"sa_7k2x9m4p"</span>,
+  <span class="key">"status"</span>: <span class="val">"deploying"</span>,
+  <span class="key">"memory_endpoint"</span>: <span class="val">"https://seedagent.dev/agents/sa_7k2x9m4p/memory"</span>,
+  <span class="key">"connectors"</span>: [<span class="val">"slack"</span>, <span class="val">"discord"</span>],
+  <span class="key">"estimated_ready"</span>: <span class="val">"58s"</span>
+}</pre>
+          </div>
+        </div>
+        <p class="agents-detail">Your parent agent receives a webhook when the sub-agent is live. Full API documentation is available in the GitHub repository.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <p class="section-label">Pricing</p>
+      <div class="price-big">$100 <span>/month</span></div>
+      <p class="price-note">Cancel anytime. No contracts.</p>
+      <p class="price-detail">The open-source framework is free forever. The hosted service runs your agent so you don't have to manage infrastructure.</p>
+      <form class="signup-form" action="#" method="post">
+        <input type="email" name="email" placeholder="you@example.com" required aria-label="Email address">
+        <button type="submit">Get Started</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-tagline">Built on seed-agent</span>
+        <ul class="footer-links">
+          <li><a href="https://github.com/fl-sean03/seed-agent">GitHub</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#agents">API</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
